@@ -63,7 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('--imagedir', type=str)
     parser.add_argument('--calib', type=str)
     parser.add_argument('--name', type=str, help='name your run', default='result')
-    parser.add_argument('--stride', type=int, default=2)
+    parser.add_argument('--stride', type=int, default=1)
     parser.add_argument('--skip', type=int, default=0)
     parser.add_argument('--config', default="config/default.yaml")
     parser.add_argument('--timeit', action='store_true')
@@ -83,6 +83,7 @@ if __name__ == '__main__':
 
     (poses, tstamps), (points, colors, calib) = run(cfg, args.network, args.imagedir, args.calib, args.stride, args.skip, args.viz, args.timeit)
     trajectory = PoseTrajectory3D(positions_xyz=poses[:,:3], orientations_quat_wxyz=poses[:, [6, 3, 4, 5]], timestamps=tstamps)
+    print(trajectory)
 
     if args.save_ply:
         save_ply(args.name, points, colors)
@@ -101,3 +102,16 @@ if __name__ == '__main__':
 
         
 
+"""
+
+python demo.py \
+    --imagedir=/mnt/cfs-baidu/algorithm/mengmeng01.liu/code/DPVO/output/scene-0103/images \
+    --calib=/mnt/cfs-baidu/algorithm/mengmeng01.liu/code/DPVO/output/scene-0103/camera_intrinsics.txt \
+    --save_trajectory \ 
+
+
+python demo.py \
+    --imagedir=/mnt/cfs-baidu/algorithm/mengmeng01.liu/code/DPVO/output/scene-0103/images \
+    --calib=/mnt/cfs-baidu/algorithm/mengmeng01.liu/code/DPVO/output/scene-0103/camera_intrinsics.txt \
+    --save_trajectory # save the predicted trajectory as .txt in TUM format
+"""

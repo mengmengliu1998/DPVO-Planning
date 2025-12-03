@@ -23,6 +23,12 @@ def image_stream(queue, imagedir, calib, stride, skip=0):
 
     for t, imfile in enumerate(image_list):
         image = cv2.imread(str(imfile))
+        
+        
+        if image is None:
+            print(f"Error reading file: {imfile}")
+            continue
+
         if len(calib) > 4:
             image = cv2.undistort(image, K, calib[4:])
 
